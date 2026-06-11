@@ -30,17 +30,9 @@ npx playwright install chromium
 
 ### Typical workflow
 
-**1. Configure a target** (one-time setup per application)
-
-```
-/qa-target-setup
-```
-
-This navigates to the app, detects authentication, and saves a config to `data/targets/<name>.yml`.
-
 ---
 
-**2. Gather requirements** (optional but recommended)
+**1. Gather requirements** (OPTIONAL)
 
 ```
 /qa-gather path/to/spec.md
@@ -51,7 +43,7 @@ Produces a structured context file at `output/context/<feature>-context.md` with
 
 ---
 
-**3. Run an exploratory session**
+**2. Run an exploratory session**
 
 ```
 # Blind exploration — no prior context
@@ -91,7 +83,7 @@ Work for 30 minutes on the exploratory session
 
 ---
 
-**4. View the results**
+**3. View the results**
 
 ```
 # Summary of the latest session
@@ -111,7 +103,7 @@ Individual bug reports are at `output/sessions/<session>/bugs/BUG-NNN.md`. The s
 
 ---
 
-**5. Quick check on a single page**
+**4. Quick check on a single page**
 
 ```
 /qa-explore-quick https://example.com/checkout
@@ -120,7 +112,7 @@ Individual bug reports are at `output/sessions/<session>/bugs/BUG-NNN.md`. The s
 
 ---
 
-**6. Capture feedback to improve future sessions**
+**5. Capture feedback to improve future sessions**
 
 ```
 /qa-explore-feedback
