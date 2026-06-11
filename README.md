@@ -19,67 +19,6 @@ An AI-driven exploratory testing framework that turns any capable AI agent into 
 
 ---
 
-## How it works
-
-### Skills
-
-The framework is built as a collection of **skills** — structured instruction sets that an AI agent loads and executes. Each skill lives under `.claude/skills/` and defines a complete workflow with phases, rules, references, and output formats.
-
-| Skill | Purpose |
-|---|---|
-| `/qa-explore` | Full exploratory session (~45 min). The core skill. |
-| `/qa-explore-quick` | Fast focused check on a single page (~15 min). |
-| `/qa-gather` | Analyze requirements and produce a context file for sessions. |
-| `/qa-target-setup` | Interactive wizard to configure a new test target. |
-| `/qa-explore-report` | Generate or reformat reports from existing sessions. |
-| `/qa-explore-feedback` | Capture post-session feedback to improve future runs. |
-| `/qa-explore-cleanup` | List, archive, or delete old sessions. |
-| `/qa-knowledge-add` | Add heuristics, techniques, or patterns to the knowledge base. |
-| `/qa-knowledge-list` | Browse and search the knowledge base. |
-
-Skills are loaded by the AI agent at runtime. They are plain markdown files — no runtime compilation, no proprietary format.
-
-### Browser automation: `playwright-cli`
-
-All browser interactions happen through the `playwright-cli` skill, which wraps Playwright's CLI to give the AI agent a controlled interface for:
-
-- Navigating pages and clicking elements
-- Filling forms and submitting data
-- Taking snapshots (page state + element refs)
-- Capturing console errors and network requests
-- Saving and restoring authentication state
-- Recording video and traces for evidence
-
-The AI uses element references from snapshots (e.g. `e15`) to interact with the page without relying on fragile CSS selectors.
-
-**Playwright CLI documentation:** https://playwright.dev/docs/cli
-
-### Knowledge base
-
-Testing heuristics (SFDIPOT, FEW HICCUPPS, Test Tours, Boundary Value Analysis, etc.) are stored as YAML files under `data/knowledge/`. The AI loads relevant heuristics at the start of each session. Patterns learned from feedback are stored in `data/knowledge/learned-patterns.md` and applied in subsequent sessions.
-
-### Output
-
-Every session produces structured output under `output/sessions/<date>-<target>/`:
-
-```
-output/sessions/2026-06-10-saucedemo-001/
-├── charter.md              # Session scope and risk ranking
-├── phase-1-discovery.md    # Application mapping findings
-├── phase-2-functional.md   # Feature testing findings
-├── phase-3-edge-cases.md   # Edge case and boundary findings
-├── session-report.md       # Full session report
-├── coverage-map.md         # Feature coverage tracker
-├── bugs/
-│   ├── BUG-001.md
-│   ├── BUG-002.md
-│   └── ...
-└── screenshots/
-    └── bug-001-*.png
-```
-
----
-
 ## Usage
 
 ### Prerequisites
@@ -215,6 +154,68 @@ Reviews each bug (valid / false positive / severity), asks for missed bugs, and 
 /qa-explore-cleanup --list
 /qa-explore-cleanup --archive 2026-06-10-saucedemo
 /qa-explore-cleanup --delete-old 30
+```
+
+
+---
+
+## How it works
+
+### Skills
+
+The framework is built as a collection of **skills** — structured instruction sets that an AI agent loads and executes. Each skill lives under `.claude/skills/` and defines a complete workflow with phases, rules, references, and output formats.
+
+| Skill | Purpose |
+|---|---|
+| `/qa-explore` | Full exploratory session (~45 min). The core skill. |
+| `/qa-explore-quick` | Fast focused check on a single page (~15 min). |
+| `/qa-gather` | Analyze requirements and produce a context file for sessions. |
+| `/qa-target-setup` | Interactive wizard to configure a new test target. |
+| `/qa-explore-report` | Generate or reformat reports from existing sessions. |
+| `/qa-explore-feedback` | Capture post-session feedback to improve future runs. |
+| `/qa-explore-cleanup` | List, archive, or delete old sessions. |
+| `/qa-knowledge-add` | Add heuristics, techniques, or patterns to the knowledge base. |
+| `/qa-knowledge-list` | Browse and search the knowledge base. |
+
+Skills are loaded by the AI agent at runtime. They are plain markdown files — no runtime compilation, no proprietary format.
+
+### Browser automation: `playwright-cli`
+
+All browser interactions happen through the `playwright-cli` skill, which wraps Playwright's CLI to give the AI agent a controlled interface for:
+
+- Navigating pages and clicking elements
+- Filling forms and submitting data
+- Taking snapshots (page state + element refs)
+- Capturing console errors and network requests
+- Saving and restoring authentication state
+- Recording video and traces for evidence
+
+The AI uses element references from snapshots (e.g. `e15`) to interact with the page without relying on fragile CSS selectors.
+
+**Playwright CLI documentation:** https://playwright.dev/docs/cli
+
+### Knowledge base
+
+Testing heuristics (SFDIPOT, FEW HICCUPPS, Test Tours, Boundary Value Analysis, etc.) are stored as YAML files under `data/knowledge/`. The AI loads relevant heuristics at the start of each session. Patterns learned from feedback are stored in `data/knowledge/learned-patterns.md` and applied in subsequent sessions.
+
+### Output
+
+Every session produces structured output under `output/sessions/<date>-<target>/`:
+
+```
+output/sessions/2026-06-10-saucedemo-001/
+├── charter.md              # Session scope and risk ranking
+├── phase-1-discovery.md    # Application mapping findings
+├── phase-2-functional.md   # Feature testing findings
+├── phase-3-edge-cases.md   # Edge case and boundary findings
+├── session-report.md       # Full session report
+├── coverage-map.md         # Feature coverage tracker
+├── bugs/
+│   ├── BUG-001.md
+│   ├── BUG-002.md
+│   └── ...
+└── screenshots/
+    └── bug-001-*.png
 ```
 
 ---
